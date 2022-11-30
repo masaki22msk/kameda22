@@ -1,50 +1,52 @@
 <?php
+session_start ();
+if(isset($_SESSION['name'])){
+  }else{
+    header('refresh:0;../login.html');
+    exit;
+}
+?>
+<?php
 require_once('k_functions.php');
-
 $pdo = connectDB();
 date_default_timezone_set('Asia/Tokyo');
-// $time = intval(date('H'));
 $time = new DateTime('now');
-// $time = $_POST['watch'];
 $time2 = $time->format("Y-m-d");
 $h = 0;
 $h1 = 0;
 $h2 = 0;
 
+session_start ();
 
-$aaa = $_POST['aaa'];
-$bbb = $_POST['bbb'];
-//日付を取得する
-$aaa1 = new DateTime($aaa);
-$bbb1 = new DateTime($bbb);
-//日付を返す
-$aaa2 = $aaa1->format("Y-m-d");
-$bbb2 = $bbb1->format("Y-m-d");
 
-//接続にはデータベース（DB）とそのuserID,passをnew PDOとして渡す
+
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     //初めにログインしたら今日の写真を表示する
-    $sql = 'SELECT * FROM images WHERE watch = :time2 AND (food = "1" OR food = "2" OR food = "3")';
-    // SQL ステートメントを準備
+    $id1 = $_SESSION['id'];  
+    $sql = 'SELECT * FROM images WHERE watch = :time2 AND (food = "1" OR food = "2" OR food = "3") AND use_id = :id1';
     $stmt = $pdo->prepare($sql);
-    // 文字型のtime値をtime2パラメータに関連付けする 
     $stmt->bindValue(':time2', $time, PDO::PARAM_STR);
-    //可変部分を変数のようにしたSQL文をあらかじめ作成しておき、値の挿入は処理系に行わせるを実行する
+    $stmt->bindValue(':id1', $id1, PDO::PARAM_INT);
     $stmt->execute();
-    //PDOでデータベースと連携した際、SQLで検索したデータを全て一括で配列に取り込む
     $images = $stmt->fetchAll();
 
     
 } else {
-    // $sql = 'SELECT * FROM images WHERE watch = :bbb AND (food = "1" OR food = "2" OR food = "3")';
-    $sql = 'SELECT * FROM images WHERE watch BETWEEN :aaa AND :bbb AND (food = "1" OR food = "2" OR food = "3") ORDER BY watch ASC, food ASC;';
+    $aaa = $_POST['aaa'];
+    $bbb = $_POST['bbb'];
+    $aaa1 = new DateTime($aaa);
+    $bbb1 = new DateTime($bbb);
+    $aaa2 = $aaa1->format("Y-m-d");
+    $bbb2 = $bbb1->format("Y-m-d");
+    $id1 = $_SESSION['id'];  
+    $sql = 'SELECT * FROM images WHERE watch BETWEEN :aaa AND :bbb AND (food = "1" OR food = "2" OR food = "3") AND use_id = :id1 ORDER BY watch ASC, food ASC;';
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':bbb', $bbb2, PDO::PARAM_STR);
     $stmt->bindValue(':aaa', $aaa2, PDO::PARAM_STR);
+    $stmt->bindValue(':id1', $id1, PDO::PARAM_INT);
     $stmt->execute();
     $images = $stmt->fetchAll();
 }
-// header('Location:picture.html');
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -58,21 +60,21 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Lato:400,300,700,900" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   
 
   <!-- Template Main CSS File -->
-  <link href="assets/css/Picstyle.css" rel="stylesheet">
+  <link href="../assets/css/Picstyle.css" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: Amoeba - v4.8.0
@@ -89,18 +91,17 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     <div class="container d-flex align-items-center">
 
       <div class="logo me-auto">
-        <h1><a href="index.html">Health First</a></h1>
+        <h1><a href="indexs.php">Health First</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="index.html">ホーム画面</a></li>
+          <li><a class="nav-link scrollto active" href="indexs.php">ホーム画面</a></li>
           <li><a href="picture.php">写真アップロード</a></li>
-          <li><a href="testcalendar.html">カレンダー管理</a></li>
-          <li><a class="nav-link scrollto" href="form.html">お問い合わせ</a></li>
-          <li><a href="login.html">ログイン</a></li>
+          <li><a class="nav-link scrollto" href="form2.php">お問い合わせ</a></li>
+          <li><a href="../logout.html">ログアウト</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -152,14 +153,21 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                           </a>
                           <div class="media-body">
                             <h5><?= $images[$i]['watch']; ?> </h5>
-                            <h5>朝食</h5>
+                            <h5><?= $images[$i]['food_time']; ?> </h5>
+                            <h5>朝食</h5>                            
                           </div>
                           <?php $h += 1 ?>
+                          この食事の評価は
+                            <?= $images[$i]['evaluation']; ?>
+                            <br>
+                            ・メモ
+                            <br>
+                            <?= $images[$i]['memo']; ?>
                     </li>
                     <?php endif; ?>
                   <?php endfor; ?>
                   <?php if($h == 0) :?>
-                    <img src="assets/img/portfolio/noPhoto.png" class="img-fluid" alt="">
+                    <img src="../assets/img/portfolio/noPhoto.png" class="img-fluid" alt="">
                   <?php endif; ?>
             </div>
           </div>
@@ -177,14 +185,21 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                           </a>
                           <div class="media-body">
                             <h5><?= $images[$i]['watch']; ?> </h5>
+                            <h5><?= $images[$i]['food_time']; ?> </h5>
                             <h5>昼食</h5>
                           </div>
                           <?php $h1 += 1 ?>
+                          この食事の評価は
+                            <?= $images[$i]['evaluation']; ?>
+                            <br>
+                            ・メモ
+                            <br>
+                            <?= $images[$i]['memo']; ?>
                     </li>
                     <?php endif; ?>
                   <?php endfor; ?>
                   <?php if($h1 == 0) :?>
-                    <img src="assets/img/portfolio/noPhoto.png" class="img-fluid" alt="">
+                    <img src="../assets/img/portfolio/noPhoto.png" class="img-fluid" alt="">
                   <?php endif; ?>
             </div>
           </div>
@@ -202,15 +217,22 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                       </a>
                       <div class="media-body">
                         <h5><?= $images[$i]['watch']; ?> </h5>
+                        <h5><?= $images[$i]['food_time']; ?> </h5>
                         <h5>夜食</h5>
                       </div>
                       <?php $h2 += 1 ?>
+                      この食事の評価は
+                            <?= $images[$i]['evaluation']; ?>
+                            <br>
+                            ・メモ
+                            <br>
+                            <?= $images[$i]['memo']; ?>
                     </li>
                 <?php endif; ?>
               <?php endfor; ?>
 
               <?php if($h2 == 0) :?>
-                <img src="assets/img/portfolio/noPhoto.png" class="img-fluid" alt="">
+                <img src="../assets/img/portfolio/noPhoto.png" class="img-fluid" alt="">
               <?php endif; ?>
             </div>
           </div>
@@ -224,20 +246,18 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
           </div>
 
             </div>
-        
-
       </div>
     </section><!-- End Our Team Section -->
     
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../assets/vendor/php-email-form/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="../assets/js/main.js"></script>
 
 </body>
 

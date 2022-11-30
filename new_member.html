@@ -22,22 +22,22 @@
 			<div class="user_card">
 				<div class="d-flex justify-content-center">
 					<div class="brand_logo_container">
-						<img src="Pict.png" class="brand_logo" alt="Logo">
+						<img src="assets/img/Pict.png" class="brand_logo" alt="Logo">
 					</div>
 				</div>
 				<div class="d-flex justify-content-center form_container">
-					<form action="http://localhost/kame/touroku.php" method="post" name="form" onsubmit="return validate()">
+					<form action="php/touroku.php" method="post" name="form" onsubmit="return validate()">
 						<div class="input-group mb-5">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							<input type="text" name="name" class="form-control input_user" value="" placeholder="名前">
+							<input type="text" name="name" class="form-control input_user" value="" placeholder="名前" required>
 						</div>
 						<div class="input-group mb-5">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user-clock"></i></span>
 							</div>
-							<input type="int" name="age" class="form-control input_pass" value="" placeholder="年齢">
+							<input type="int" name="age" class="form-control input_pass" value="" placeholder="年齢" min='1' max='130' required>
 							<div class="input-group-append">
 								<span class="input-group-text">歳</span>
 							  </div>
@@ -46,20 +46,20 @@
 							<div class="input-group-append">
 								<label id="sex_title_label">性別</label>
 							</div>
-							<label id="sexlabel">男</label><input type="radio" name="sex" class="form-control input_pass" value="男" id="sexinput">
-							<label id="sexlabel">女</label><input type="radio" name="sex" class="form-control input_pass" value="女" id="sexinput">
+							<label id="sexlabel">男</label><input type="radio" name="sex" class="form-control input_pass" value="男" id="sexinput" checked required>
+							<label id="sexlabel">女</label><input type="radio" name="sex" class="form-control input_pass" value="女" id="sexinput" required>
 						</div>
 						<div class="input-group mb-5">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-at"></i></i></span>
 							</div>
-							<input type="text" name="mail" class="form-control input_user" value="" placeholder="メールアドレス">
+							<input type="text" name="mail" class="form-control input_user" value="" placeholder="メールアドレス" required>
 						</div>
 						<div class="input-group mb-5">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
-							<input type="int" name="password" class="form-control input_pass" value="" placeholder="パスワード">
+							<input type="int" name="password" class="form-control input_pass" value="" placeholder="パスワード" required>
 						</div>
 <!--------------------------------------------------------------------------------------------------------------------------------->						
 							<div class="d-flex justify-content-center mt-3 login_container">
