@@ -89,7 +89,7 @@ if  ( $_SERVER['REQUEST_METHOD'] !='POST'){
     <div class="container d-flex align-items-center">
 
       <div class="logo me-auto">
-        <h1><a href="indexs.php">Health First</a></h1>
+        <h1><a href="../indexs.php">Health First</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -160,7 +160,7 @@ if  ( $_SERVER['REQUEST_METHOD'] !='POST'){
 
         <div class="section-title">
           <h2>サービス</h2>
-          <p>各種様々なサービスがあります。実際にどのようなサービスを受ける事が出来るか、専門スタッフのサポートを受けてみましょう！</p>
+          <p>利益を得るには多大な労力が必要です。貴方のニーズは、実際に貴方の憤怒と欲望の中から生じます。貴方が理想を望むものにしましょう。そして、他人はそれを受け入れません。</p>
         </div>
 
         <div class="row">
@@ -174,7 +174,7 @@ if  ( $_SERVER['REQUEST_METHOD'] !='POST'){
           </div>
           <div class="col-lg-4 col-md-6 icon-box">
             <div class="icon"><i class="bi bi-globe"></i></div>
-            <h4 class="title"><a href="chatbot.html">専門スタッフによるサポート</a></h4>
+            <h4 class="title"><a href="../chatbot.html">専門スタッフのアフタフォロー</a></h4>
           </div>
       </div>
     </section><!-- End Services Section -->

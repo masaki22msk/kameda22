@@ -44,7 +44,7 @@ $dsn = "mysql:host={$host};dbname={$dbName};charset=utf8";
     //  ","; // 最後の要素ではないとき
     //  }
     //,JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT
-    $image = json_encode($image,JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    $image = json_encode($image,JSON_PRETTY_PRINT);
     //$image = str_replace('¥u0022', '¥¥¥"', $image);
     var_dump($image);
     }

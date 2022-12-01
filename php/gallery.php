@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
           <li><a href="picture.php">写真アップロード</a></li>
           <li><a class="nav-link scrollto" href="form2.php">お問い合わせ</a></li>
           <li><a href="../logout.html">ログアウト</a></li>
+          <li><a href="keijiban.php">ログアウト</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
