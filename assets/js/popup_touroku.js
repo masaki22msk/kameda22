@@ -12,7 +12,7 @@ window.onload = function ScreenIn() {
 
 //3秒後にホームページへ遷移する。
 function ScreenOut(){
-  window.location.href = 'login.html';
+  window.location.href = 'index.html';
 }
 
 //3秒カウント
