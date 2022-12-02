@@ -96,16 +96,16 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto active" href="indexs.php">ホーム画面</a></li>
-          <li><a href="picture.php">写真アップロード</a></li>
-          <li><a class="nav-link scrollto" href="form2.php">お問い合わせ</a></li>
-          <li><a href="../logout.html">ログアウト</a></li>
-          <li><a href="keijiban.php">ログアウト</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto active" href="indexs.php">ホーム画面</a></li>
+        <li><a href="picture.php">写真アップロード</a></li>
+        <li><a class="nav-link scrollto" href="form2.php">お問い合わせ</a></li>
+        <li><a href="logout.php">ログアウト</a></li>
+        <li><a href="keijiban.php">掲示板</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
 
     </div>
   </header><!-- End #header -->
@@ -115,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     <div class="hero-container">
       <h1>Welcome to Health First</h1>
       <h2>ここでは、あなたの健康を振り返ることができます。さあ恐れずに自分と向き合うのです。</h2>
-      <a href="#about" class="btn-get-started scrollto">はじめよう！</a>
     </div>
   </section><!-- #hero -->
 
