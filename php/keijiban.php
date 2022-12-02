@@ -25,13 +25,67 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 //データベースにあるデータを降順で取得
 $regist = $pdo->prepare("SELECT * FROM post ORDER BY id DESC");
 $regist->execute();
+$popo = $regist->fetchAll();
 
 //データベースの値の数を取得
 $sqlq = "SELECT * FROM post";
 $sth = $pdo -> query($sqlq);
 $count = $sth -> rowCount();
 
+
 ?>
+
+
+<!-- ページネーションの処理（仮） -->
+<?php
+
+include "./PrevNext.php";
+include "./Numbers.php";
+
+//ダミーデータジェネレータ
+function createDummy($count) {
+  $dummy = [];
+  //０から初めて～$popoの個数分回すよ　値はnullで
+  foreach(array_fill(0, $count, null) as $k => $v) {
+    $dummy[] = 'Item ' . ($k + 1);
+    // $dummy[] = $popo[$k]['contents']; 
+    // $k + 1;
+  }
+  return $dummy;
+}
+
+$items = createDummy($count); //ダミーデータ
+$perPage = 10; // １ページあたりのデータ件数
+$totalPage = ceil($count / $perPage); // 最大ページ数
+$page = empty($_GET['page']) ? 1 : (int) $_GET['page']; // 現在のページ
+
+
+?>
+
+
+<?php
+// ページ番号でデータにフィルタかける
+function filterData($page, $perPage, $data) {
+  //データの個数・
+  return array_filter($data, function($i) use ($page, $perPage) {
+    return $i >= ($page - 1) * $perPage && $i < $page * $perPage;
+  }, ARRAY_FILTER_USE_KEY);
+}
+
+//現在のページ数・１ページに何個の値を表示するか・（まだわからないけど）データの個数
+$filterData = filterData($page, $perPage, $items);
+
+print '<ol>';
+foreach ($filterData as $data) {
+  print '<li>' . $data . '</li>';
+}
+print '</ol>';
+?>
+
+
+
+
+
 
 
 <!DOCTYPE html>
@@ -82,14 +136,16 @@ $count = $sth -> rowCount();
       </div>
 
       <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto active" href="#hero">ホーム画面</a></li>
-          <li><a href="form.html">お問い合わせ</a></li>
-          <li><a href="login.html">ログイン</a></li>
-          <li><a href="new_member.html">新規登録</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+      <ul>
+        <li><a href="indexs.php">ホーム画面</a></li>
+        <li><a href="picture.php">写真アップロード</a></li>
+        <li><a href="gallery.php">写真閲覧</a></li>
+        <li><a href="form2.php">お問い合わせ</a></li>
+        <li><a class="nav-link scrollto active" href="keijiban.php">掲示板</a></li>
+        <li><a href="logout.php">ログアウト</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
 
     </div>
   </header><!-- End #header -->
@@ -99,7 +155,6 @@ $count = $sth -> rowCount();
     <div class="hero-container">
       <h1>Welcome to Health First</h1>
       <h2>私たちは、健康を一番に才能のあるWebデザインのチームです。</h2>
-      <a href="new_member.html" class="btn-get-started scrollto">はじめよう！</a>
     </div>
   </section><!-- #hero -->
 
@@ -109,9 +164,10 @@ $count = $sth -> rowCount();
     <section id="about" class="about">
         <div class="container">
             <div class="row">
+
                 <div class="col-lg-6 order-1 order-lg-2">
 	                <h2>投稿内容一覧</h2>
-		            <?php foreach($regist as $loop):?>
+		            <?php foreach($popo as $loop):?>
 		        	    <div>No:<?php echo $loop['id']?></div>
 		        	    <div>名前：<?php echo $loop['name']?></div>
 		        	    <div>投稿内容：<?php echo $loop['contents']?></div>
@@ -126,10 +182,10 @@ $count = $sth -> rowCount();
                         <button type="submit">投稿</button>
                     </form>
                 </div>
-                <?php
-                require_once('pagination.php');
-                require_once('pagination2.php');
-                ?>
+                <div>
+                    <?php paging2($totalPage, $page); ?>
+                </div> 
+
             </div>
             
     </section><!-- End About Us Section -->

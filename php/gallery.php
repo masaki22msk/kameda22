@@ -22,13 +22,16 @@ session_start ();
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     //初めにログインしたら今日の写真を表示する
+    $aaa = $time2;
+    $bbb = $time2;
     $id1 = $_SESSION['id'];  
     $sql = 'SELECT * FROM images WHERE watch = :time2 AND (food = "1" OR food = "2" OR food = "3") AND use_id = :id1';
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':time2', $time, PDO::PARAM_STR);
+    $stmt->bindValue(':time2', $time2, PDO::PARAM_STR);
     $stmt->bindValue(':id1', $id1, PDO::PARAM_INT);
     $stmt->execute();
     $images = $stmt->fetchAll();
+
 
     
 } else {
@@ -96,13 +99,14 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
-    <nav id="navbar" class="navbar">
+      <nav id="navbar" class="navbar">
       <ul>
-        <li><a class="nav-link scrollto active" href="indexs.php">ホーム画面</a></li>
+        <li><a class="nav-link scrollto" href="indexs.php">ホーム画面</a></li>
         <li><a href="picture.php">写真アップロード</a></li>
-        <li><a class="nav-link scrollto" href="form2.php">お問い合わせ</a></li>
-        <li><a href="logout.php">ログアウト</a></li>
+        <li><a class="nav-link scrollto active" href="gallery.php">写真閲覧</a></li>
+        <li><a href="form2.php">お問い合わせ</a></li>
         <li><a href="keijiban.php">掲示板</a></li>
+        <li><a href="logout.php">ログアウト</a></li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
     </nav><!-- .navbar -->

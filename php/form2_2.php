@@ -59,7 +59,6 @@
               }
     }else{
       header('refresh:0;popup_meiladress.html');
-      // print_r("'$EMail'は不正な形式のメールアドレスです。");
         
     }
     ?>
