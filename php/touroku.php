@@ -53,7 +53,7 @@
         echo '<span class="error">追加エラーがありました。</span><br>';
       };
     } catch (Exception $e) {
-      echo '<span class="error">エラーがありました。</span><br>';
+      header('refresh:0;../popup_touroku3.html');
       echo $e->getMessage();
           }
   }else{

@@ -1,0 +1,41 @@
+.sample {
+	position:relative;
+	overflow:hidden;
+	box-shadow:0 4px 20px rgba(0, 0, 0, 0.2);
+	margin:0 auto;
+	width:1920px;
+	height:980px;
+	background-color:#fff;
+}
+
+	.sample::before,
+	.sample::after {
+		position:absolute;
+		left:-50%;
+		width:200%;
+		height:200%;
+		content:"";
+		background-color:#3168dd;
+		animation:wave linear 6s infinite;
+	}
+
+	.sample::before {
+		top:-150%;
+		border-radius:50% 50% / 50% 70%;
+	}
+
+	.sample::after {
+		top:-146%;
+		border-radius:30% 70% / 30% 50%;
+		opacity:0.2;
+		animation-delay:0.4s;
+	}
+
+@keyframes wave {
+	from {
+		transform:rotate(0deg);
+	}
+	to {
+		transform:rotate(360deg);
+	}
+}
