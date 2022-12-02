@@ -48,7 +48,7 @@ function linkGo(MM,DD){
 
 	}else if(actObj == 1){
 		var form = document.createElement("form"); //formを作成
-		form.action = 'http://'+ urlObj;
+		form.action = urlObj;
 		form.method = "POST";
 
 		// POSTパラメーターようにinputタグを生成
@@ -79,7 +79,7 @@ function linkGo(MM,DD){
 		// newWin1.focus();
 
 	}else if(actObj == 3){
-		newWin2 = window.open('http://' + urlObj, 'newWin', 'width=' + winWW + ', height=' + winHH + ', menubar=yes, toolbar=yes, scrollbars=' + winSCL + '');
+		newWin2 = window.open(urlObj, 'newWin', 'width=' + winWW + ', height=' + winHH + ', menubar=yes, toolbar=yes, scrollbars=' + winSCL + '');
 		newWin2.focus();
 	}
 }
@@ -102,40 +102,40 @@ i = 0;
 
 
 for (let i = 1; i < 32; i++){
-	linkdaySet(1,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(1,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 30; i++){
-	linkdaySet(2,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(2,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(3,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(3,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 }; 
 for (let i = 1; i < 32; i++){
-	linkdaySet(4,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(4,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(5,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(5,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(6,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(6,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(7,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(7,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(8,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(8,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(9,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(9,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(10,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(10,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(11,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(11,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 for (let i = 1; i < 32; i++){
-	linkdaySet(12,i,1,'localhost/kame/php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
+	linkdaySet(12,i,1,'php/gallery.php','Yahoo!へのリンクです。<br>自ウィンドウで移動します。');
 };
 
 //ポップアップウィンドウの幅と高さを指定
