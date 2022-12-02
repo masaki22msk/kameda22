@@ -1,68 +1,175 @@
 <?php
 //DB接続情報を設定します。
-$pdo = new PDO(
-    "mysql:dbname=kasedasaba;host=localhost","kame","kame",array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET CHARACTER SET `utf8`")
-);
-//ここで「DB接続NG」だった場合、接続情報に誤りがあります。
-// if ($pdo) {
-//     echo "DB接続OK";
-// } else {
-//     echo "DB接続NG";
-// }
-//SQLを実行。
+require_once('k_functions.php');
+$pdo = connectDB();
+
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+    // print("sippao"); 
+
+} else {
+    $name1 = $_POST["name1"];
+    $contents1 = $_POST["contents1"];
+    date_default_timezone_set('Asia/Tokyo');
+
+    if ($name1 == "" || $contents1 == ""){
+        
+    }else {
+        $sql = 'INSERT INTO post(name, contents, created_at) VALUES (:name, :contents, now())'; 
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':name', $name1, PDO::PARAM_STR);
+        $stmt->bindValue(':contents', $contents1, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+}
+
+//データベースにあるデータを降順で取得
 $regist = $pdo->prepare("SELECT * FROM post ORDER BY id DESC");
-// $count_sql = $pdo->prepare("SELECT count(*) from post");
-$count_sql = 'SELECT COUNT(*) as cnt FROM post';
-// select count(*) as cnt from products
 $regist->execute();
-//ここで「登録失敗」だった場合、SQL文に誤りがあります。
-// if ($regist) {
-//     echo "登録成功";
-// } else {
-//     echo "登録失敗";
-// }
+
+//データベースの値の数を取得
+$sqlq = "SELECT * FROM post";
+$sth = $pdo -> query($sqlq);
+$count = $sth -> rowCount();
+
 ?>
-<!-- 追記１ここまで -->
+
 
 <!DOCTYPE html>
-<meta charset="UTF-8">
-<title>掲示板サンプル</title>
-<h1>掲示板サンプル</h1>
-<section>
-    <h2>新規投稿</h2>
-    <form action="send.php" method="post">
-        名前 : <input type="text" name="name" value=""><br>
-        投稿内容: <input type="text" name="contents" value=""><br>
-        <button type="submit">投稿</button>
-    </form>
-</section>
- 
-<!-- 追記２ここから -->
-<section>
-	<h2>投稿内容一覧</h2>
-		<?php foreach($regist as $loop):?>
-			<div>No:<?php echo $loop['id']?></div>
-			<div>名前：<?php echo $loop['name']?></div>
-			<div>投稿内容：<?php echo $loop['contents']?></div>
-			<div>------------------------------------------</div>
-		<?php endforeach;?>
-</section>
+<html lang="ja">
 
-<?php print_r($count_sql)?>
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
+  <title>health first</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
+  <!-- Favicons -->
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-<!-- <?php if($page >= 2): ?>
-    <a href="keijiban.php?page=<?php print($page-1); ?>"><?php print($page-1); ?>ページ目へ</a>
-<?php endif; ?>
-  |
-<?php
-  $counts = $db->query('SELECT COUNT(*) as cnt FROM 部品登録');
-  $count = $counts->fetch();  //1件のデータだけなので直接fetch
-  $max = ceil($count['cnt'] / 10);  //ceilで少数点を切り上げて次ページへ
-  if($page < $max): //最大ページ数より小さければ"ページ目へ"を表示する
-?>
-  <a href="index.php?page=<?php print($page+1); ?>"><?php print($page+1); ?>ページ目へ</a>
-<?php endif; ?> -->
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Lato:400,300,700,900" rel="stylesheet">
 
-<?php require_once('paging2.php') ?>
+  <!-- Vendor CSS Files -->
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="../assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Amoeba - v4.8.0
+  * Template URL: https://bootstrapmade.com/free-one-page-bootstrap-template-amoeba/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center">
+
+      <div class="logo me-auto">
+        <h1><a href="index.html">Health First</a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">ホーム画面</a></li>
+          <li><a href="form.html">お問い合わせ</a></li>
+          <li><a href="login.html">ログイン</a></li>
+          <li><a href="new_member.html">新規登録</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End #header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+    <div class="hero-container">
+      <h1>Welcome to Health First</h1>
+      <h2>私たちは、健康を一番に才能のあるWebデザインのチームです。</h2>
+      <a href="new_member.html" class="btn-get-started scrollto">はじめよう！</a>
+    </div>
+  </section><!-- #hero -->
+
+  <main id="main">
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 order-1 order-lg-2">
+	                <h2>投稿内容一覧</h2>
+		            <?php foreach($regist as $loop):?>
+		        	    <div>No:<?php echo $loop['id']?></div>
+		        	    <div>名前：<?php echo $loop['name']?></div>
+		        	    <div>投稿内容：<?php echo $loop['contents']?></div>
+		        	<div>------------------------------------------</div>
+		            <?php endforeach;?>
+                </div>
+                <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
+                    <h2>新規投稿</h2>
+                    <form  method="post">
+                        名前 : <input type="text" name="name1" value=""><br>
+                        投稿内容: <input type="text" name="contents1" value=""><br>
+                        <button type="submit">投稿</button>
+                    </form>
+                </div>
+                <?php
+                require_once('pagination.php');
+                require_once('pagination2.php');
+                ?>
+            </div>
+            
+    </section><!-- End About Us Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>サービス</h2>
+          <p>利益を得るには多大な労力が必要です。貴方のニーズは、実際に貴方の憤怒と欲望の中から生じます。貴方が理想を望むものにしましょう。そして、他人はそれを受け入れません。</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 icon-box">
+            <div class="icon"><i class="bi bi-cpu"></i></div>
+            <h4 class="title"><a href="">食事写真アップロード機能</a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box">
+            <div class="icon"><i class="bi bi-clipboard-data"></i></div>
+            <h4 class="title"><a href="">カレンダーで全てを管理</a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box">
+            <div class="icon"><i class="bi bi-globe"></i></div>
+            <h4 class="title"><a href="chatbot.html">専門スタッフのアフタフォロー</a></h4>
+          </div>
+      </div>
+    </section><!-- End Services Section -->
+
+    
+  <!-- Vendor JS Files -->
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="../assets/js/main.js"></script>
+
+</body>
+
+</html>
