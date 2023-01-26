@@ -55,7 +55,7 @@
     } catch (Exception $e) {
       header('refresh:0;../popup_touroku3.html');
       echo $e->getMessage();
-          }
+    }
   }else{
     //メールアドレスが正しくなかった場合
     header('refresh:0;../popup_touroku2.html');

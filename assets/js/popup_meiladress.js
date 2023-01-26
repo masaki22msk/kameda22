@@ -15,7 +15,7 @@ window.onload = function ScreenIn() {
 
 //3秒後にホームページへ遷移する。
 function ScreenOut(){
-  window.location.href = 'form2.php';
+  window.location.href = 'php/form2.php';
 }
 
 //3秒カウント

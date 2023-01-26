@@ -54,16 +54,18 @@ if(isset($_SESSION['name'])){
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
-    <nav id="navbar" class="navbar">
+      <nav id="navbar" class="navbar">
       <ul>
-        <li><a class="nav-link scrollto active" href="indexs.php">ホーム画面</a></li>
+        <li><a class="nav-link scrollto" href="indexs.php">ホーム画面</a></li>
         <li><a href="picture.php">写真アップロード</a></li>
-        <li><a class="nav-link scrollto" href="form2.php">お問い合わせ</a></li>
+        <li><a href="gallery.php">写真閲覧</a></li>
+        <li><a class="nav-link scrollto active" href="form2.php">お問い合わせ</a></li>
+        <li><a href="test.php">掲示板</a></li>
         <li><a href="logout.php">ログアウト</a></li>
-        <li><a href="keijiban.php">掲示板</a></li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
     </nav><!-- .navbar -->
+    
     </div>
   </header><!-- End #header -->
   <main id="main">
@@ -72,19 +74,19 @@ if(isset($_SESSION['name'])){
       <table>
           <tr>
               <th class="hissu"><label>氏名</label></th>
-              <td><input class="form-control" name="name1" type="text" value="" placeholder="氏名" required></td>
+              <td><input class="form-control" name="name1" type="text" value="" placeholder="氏名" ></td>
           </tr>
           <tr>
               <th class="ninni"><label>Mail</label></th>
-              <td><input  class="form-control" name="EMail" type="text" value="" placeholder="メールアドレス" required></td>
+              <td><input  class="form-control" name="EMail" type="text" value="" placeholder="メールアドレス" ></td>
           </tr>
           <tr>
               <th class="ninni"><label>年齢</label></th>
-              <td><input class="form-control" name="age1" type="number" class="smallinput" value="" placeholder="年齢"  min='1' max='130' required></td>
+              <td><input class="form-control" name="age1" type="number" class="smallinput" value="" placeholder="年齢"  min='1' max='130' ></td>
           </tr>
           <tr>
               <th class="hissu"><label>内容</label></th>
-              <td><textarea class="form-control" name="contents" value="" placeholder="内容" required></textarea></td>
+              <td><textarea class="form-control" name="contents" value="" placeholder="内容" ></textarea></td>
           </tr>
       </table>
       <div class="buttonwrap">

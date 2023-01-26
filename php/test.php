@@ -1,10 +1,20 @@
 <?php
-//DB接続情報を設定します。
+session_start ();
+if(isset($_SESSION['name'])){
+    
+  }else{
+    header('refresh:0;../login.html');
+    exit;
+}
+?>
+<?php
+define('MAX','15'); // 1ページの記事の表示数
+
 require_once('k_functions.php');
 $pdo = connectDB();
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-    // print("sippao"); 
+    //新規入力の処理
 
 } else {
     $name1 = $_POST["name1"];
@@ -22,72 +32,29 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     }
 }
 
-//データベースにあるデータを降順で取得
-$regist = $pdo->prepare("SELECT * FROM post ORDER BY id DESC");
-$regist->execute();
-$popo = $regist->fetchAll();
 
-//データベースの値の数を取得
-$sqlq = "SELECT * FROM post";
-$sth = $pdo -> query($sqlq);
-$count = $sth -> rowCount();
 
+$entry = $pdo->query('SELECT * FROM post ORDER BY created_at DESC');
+$entry->execute();
+$post = $entry->fetchAll(); //$post= 全部の情報
+$count = COUNT($post);//データの総数を取得
+
+$max_page = ceil($count / MAX); // トータルページ数※ceilは小数点を切り捨てる関数
+ 
+if(!isset($_GET['page_id'])){ // $_GET['page_id'] はURLに渡された現在のページ数
+    $now = 1; // 設定されてない場合は1ページ目にする
+}else{
+    $now = $_GET['page_id'];
+}
+ 
+$start_no = ($now - 1) * MAX; // 配列の何番目から取得すればよいか
+
+
+// array_sliceは、配列の何番目($start_no)から何番目(MAX)まで切り取る関数
+$disp_data = array_slice($post, $start_no, MAX, true);
+ 
 
 ?>
-
-
-<!-- ページネーションの処理（仮） -->
-<?php
-
-include "./PrevNext.php";
-include "./Numbers.php";
-
-//ダミーデータジェネレータ
-function createDummy($count) {
-  $dummy = [];
-  //０から初めて～$popoの個数分回すよ　値はnullで
-  foreach(array_fill(0, $count, null) as $k => $v) {
-    $dummy[] = 'Item ' . ($k + 1);
-    // $dummy[] = $popo[$k]['contents']; 
-    // $k + 1;
-  }
-  return $dummy;
-}
-
-$items = createDummy($count); //ダミーデータ
-$perPage = 10; // １ページあたりのデータ件数
-$totalPage = ceil($count / $perPage); // 最大ページ数
-$page = empty($_GET['page']) ? 1 : (int) $_GET['page']; // 現在のページ
-
-
-?>
-
-
-<?php
-// ページ番号でデータにフィルタかける
-function filterData($page, $perPage, $data) {
-  //データの個数・
-  return array_filter($data, function($i) use ($page, $perPage) {
-    return $i >= ($page - 1) * $perPage && $i < $page * $perPage;
-  }, ARRAY_FILTER_USE_KEY);
-}
-
-//現在のページ数・１ページに何個の値を表示するか・（まだわからないけど）データの個数
-$filterData = filterData($page, $perPage, $items);
-
-print '<ol>';
-foreach ($filterData as $data) {
-  print '<li>' . $data . '</li>';
-}
-print '</ol>';
-?>
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -166,26 +133,62 @@ print '</ol>';
             <div class="row">
 
                 <div class="col-lg-6 order-1 order-lg-2">
-	                <h2>投稿内容一覧</h2>
-		            <?php foreach($popo as $loop):?>
-		        	    <div>No:<?php echo $loop['id']?></div>
-		        	    <div>名前：<?php echo $loop['name']?></div>
-		        	    <div>投稿内容：<?php echo $loop['contents']?></div>
-		        	<div>------------------------------------------</div>
-		            <?php endforeach;?>
+	                <?php foreach($disp_data as $val):?>  <!--データ表示  -->
+                        <div>No:<?php echo $val['id']?>  　投稿日時:<?php echo $val['created_at']?></div>
+		        	    <div>名前：<?php echo $val['name']?></div>
+		        	    <div>投稿内容：<?php echo $val['contents']?></div>
+		        	<div>----------------------------------------------------------------------------------------------------------------------</div>
+                    <?php endforeach;?>
+
+                  <div>
+                  <?php
+                  echo '全件数'. $count. '件'. '　'; // 全データ数の表示です。
+
+                  if($now > 1){ // リンクをつけるかの判定
+                     echo '<a href="/kame/php/test.php?page_id='. 1 .'" >前線へ</a>'. '　';
+                  } else {
+                     echo '前線へ'. '　';
+                  }
+                  if($now > 1){ // リンクをつけるかの判定
+                    echo '<a href="/kame/php/test.php?page_id='. ($now - 1)   .'" >前へ</a>'. '　';
+                 } else {
+                    echo '前へ'. '　';
+                 }
+                 
+                  for($i = 1; $i <= $max_page; $i++){
+                    if ($i == $now) {
+                       echo $now. '　';   
+                    } elseif ($i >($now + 2)){
+
+                    } elseif ($i <($now - 2)){
+                      
+                    }else {
+                       echo '<a href="/kame/php/test.php?page_id='.$i.'" >'. $i. '</a>'. '　';
+                    }
+                }
+                  if($now < $max_page){ // リンクをつけるかの判定
+                     echo '<a href="/kame/php/test.php?page_id='. ($now + 1) .'" >次へ</a>'. '　';
+                  } else {
+                    echo '次へ';
+                  }
+                  if($now < $max_page){ // リンクをつけるかの判定
+                    echo '<a href="/kame/php/test.php?page_id='. $max_page .'" >最後尾へ</a>'. '　';
+                 } else {
+                    echo '最後尾へ';
+                 }
+                 ?>
+                </div> 
+
                 </div>
+
                 <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
                     <h2>新規投稿</h2>
                     <form  method="post">
-                        名前 : <input type="text" name="name1" value=""><br>
+                        名　前　: <input type="text" name="name1" value=""><br>
                         投稿内容: <input type="text" name="contents1" value=""><br>
                         <button type="submit">投稿</button>
                     </form>
                 </div>
-                <div>
-                    <?php paging2($totalPage, $page); ?>
-                </div> 
-
             </div>
             
     </section><!-- End About Us Section -->

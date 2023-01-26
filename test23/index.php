@@ -1,18 +1,20 @@
-<?php for ($i = 1; $i <= $max_page; $i++) : ?>
-   <?php if($i >= $page - $range && $i <= $page + $range) : ?>
-       <?php if($i == $page) : ?>
-           <span class="now_page_number"><?php echo $i; ?></span>
-       <?php else: ?>
-           <a href="?page=<?php echo $i; ?>" class="page_number"><?php echo $i; ?></a>
-       <?php endif; ?>
-   <?php endif; ?>
-<?php endfor; ?>
+<main>
+<h2>登録した部品名一覧</h2>
+<?php
+require('connect.php');
 
-<?php if($page < $max_page) : ?>
-        <a href="index.php?page=<?php echo($page + 1); ?>" class="page_feed">&raquo;</a>
-    <?php else : ?>
-        <span class="first_last_page">&raquo;</span>
-    <?php endif; ?>
-</div>
-
-<p class="from_to"><?php echo $count['cnt']; ?>件中 <?php echo $from_record; ?> - <?php echo $to_record;?> 件目を表示</p>
+$page = $_REQUEST['page'];
+$start = 10 * ($page-1);
+// 部品登録テーブルの部品名の値を降順に取得して$entryに格納
+$entry = $db->query('SELECT * FROM post ORDER BY contents DESC LIMIT ?,10');
+$entry->bindParam(1,$start, PDO::PARAM_INT);
+$entry->execute();
+?>
+<article>
+  <?php while($resister = $entry->fetch()): ?><!-- $entryの値をfetchで1件ずつ取得して$resistorへ格納 -->
+    <a href="request.php"><?php print(mb_substr($resister['contents'],0,50)); ?></a>
+    <time><?php print($resister['created_at']); ?></time>
+    <hr size='3' color="#a9a9a9" width="450" align="left">
+  <?php endwhile; ?>
+</article>
+</main>

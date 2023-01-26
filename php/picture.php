@@ -130,13 +130,14 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
-    <nav id="navbar" class="navbar">
+      <nav id="navbar" class="navbar">
       <ul>
-        <li><a class="nav-link scrollto active" href="indexs.php">ホーム画面</a></li>
-        <li><a href="picture.php">写真アップロード</a></li>
-        <li><a class="nav-link scrollto" href="form2.php">お問い合わせ</a></li>
+        <li><a href="indexs.php">ホーム画面</a></li>
+        <li><a  class="nav-link scrollto active" href="picture.php">写真アップロード</a></li>
+        <li><a href="gallery.php">写真閲覧</a></li>
+        <li><a href="form2.php">お問い合わせ</a></li>
+        <li><a href="test.php">掲示板</a></li>
         <li><a href="logout.php">ログアウト</a></li>
-        <li><a href="keijiban.php">掲示板</a></li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
     </nav><!-- .navbar -->
@@ -197,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                       <!-- 今日の日付の写真がある場合に表示 -->
                       <li class="media mt-5">
                           <a href="#lightbox" data-toggle="modal" data-slide-to="<?= $i; ?>">
-                              <img src="k_image.php?id=<?= $images[$i]['id']; ?>" width="400" height="280" class="mr-3">
+                              <img src="k_image.php?id=<?= $images[$i]['id']; ?>" width="420" height="300" class="mr-3">
                           </a>
                           <div class="media-body">
                               <h5><?= $images[$i]['image_name']; ?> (<?= number_format($images[$i]['image_size']/1000, 2); ?> KB)</h5>
@@ -271,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                     <?php if($images[$i]['food'] == "2") :?>
                       <li class="media mt-5">
                           <a href="#lightbox" data-toggle="modal" data-slide-to="<?= $i; ?>">
-                              <img src="k_image.php?id=<?= $images[$i]['id']; ?>" width="400" height="280" class="mr-3">
+                              <img src="k_image.php?id=<?= $images[$i]['id']; ?>" width="420" height="300" class="mr-3">
                           </a>
                           <div class="media-body">
                               <h5><?= $images[$i]['image_name']; ?> (<?= number_format($images[$i]['image_size']/1000, 2); ?> KB)</h5>
@@ -293,22 +294,36 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
                   <img id="preview3" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="img-fluid" alt="" >
                   </p>
+
                   <script>
                   function previewImage2(obj)
                   {
                     var fileReader = new FileReader();
+
+                  if (fileReader != null){
                     fileReader.onload = (function() {
                       document.getElementById('preview3').src = fileReader.result;
                     });
                     fileReader.readAsDataURL(obj.files[0]);
                   }
+
+                  if (fileReader == null and $ko == 0){
+                    <p><img src="../assets/img/portfolio/noPhoto.png" alt="noPhoto"></p>
+                  }
+
+                  }
                   </script>
+
+      
+
+
+
                 <div class="portfolio-info">
                   <h3><a href="../assets/img/portfolio/portfolio-3.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2">昼食</a></h3>
-                  <!-- <div>
-                    <a href="assets/img/portfolio/portfolio-3.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bi bi-plus"></i></a>
-                    <a href="portfolio-details.html" title="Details"><i class="bi bi-link"></i></a>
-                  </div> -->
+                   <div>
+                   <!--<a href="assets/img/portfolio/portfolio-3.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bi bi-plus"></i></a>
+                    <a href="portfolio-details.html" title="Details"><i class="bi bi-link"></i></a>-->
+                  </div> 
                 </div>
                 <?php if($ko == 0) :?>
                       <img src="../assets/img/portfolio/noPhoto.png" class="img-fluid" alt="">
@@ -329,6 +344,9 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
               </div>
             </div>
   
+
+
+
             <div class="col-lg-4 col-md-6 portfolio-item filter-app">
               <div class="portfolio-wrap">
                 <!--<img src="assets/img/portfolio/portfolio-6.jpg" class="img-fluid" alt="">-->
@@ -345,7 +363,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                     <?php if($images[$i]['food'] == "3") :?>
                       <li class="media mt-5">
                           <a href="#lightbox" data-toggle="modal" data-slide-to="<?= $i; ?>">
-                              <img src="k_image.php?id=<?= $images[$i]['id']; ?>" width="400" height="280" class="mr-3">
+                              <img src="k_image.php?id=<?= $images[$i]['id']; ?>" width="420" height="300" class="mr-3">
                           </a>
                           <div class="media-body">
                               <h5><?= $images[$i]['image_name']; ?> (<?= number_format($images[$i]['image_size']/1000, 2); ?> KB)</h5>

@@ -15,7 +15,7 @@ window.onload = function ScreenIn() {
 
 //3秒後にホームページへ遷移する。
 function ScreenOut(){
-  window.location.href = 'indexsa.php';
+  window.location.href = 'php/indexsa.php';
 }
 
 //3秒カウント

@@ -1,51 +1,57 @@
 <?php
-session_start ();
-if(isset($_SESSION['name'])){
-  }else{
-    header('refresh:0;../login.html');
-    exit;
+define('MAX','25'); // 1ページの記事の表示数
+require('connect.php');
+
+$entry = $db->query('SELECT * FROM post ORDER BY created_at DESC');
+$entry->execute();
+$post = $entry->fetchAll(); //$post= 全部の情報
+$count = COUNT($post);//データの総数を取得
+
+$max_page = ceil($count / MAX); // トータルページ数※ceilは小数点を切り捨てる関数
+ 
+if(!isset($_GET['page_id'])){ // $_GET['page_id'] はURLに渡された現在のページ数
+    $now = 1; // 設定されてない場合は1ページ目にする
+}else{
+    $now = $_GET['page_id'];
 }
+ 
+$start_no = ($now - 1) * MAX; // 配列の何番目から取得すればよいか
+
+
+// array_sliceは、配列の何番目($start_no)から何番目(MAX)まで切り取る関数
+$disp_data = array_slice($post, $start_no, MAX, true);
+ 
+
+foreach($disp_data as $val){ // データ表示
+    // echo $post[$r]['name']. '　'.$post[$r]['contents']. '<br />'; 
+    echo $val['name']. '　'.$val['contents']. '<br />';
+    
+
+}
+
+echo '全件数'. $count. '件'. '　'; // 全データ数の表示です。
+ 
+ if($now > 1){ // リンクをつけるかの判定
+    // $now = $now - 1;
+    echo '<a href="/kame/test2023/test.php?page_id='.$now .'" >前へ</a>'. '　';
+ } else {
+    echo '前へ'. '　';
+ }
+ for($i = 1; $i <= $max_page; $i++){
+     if ($i == $now) {
+        echo $now. '　'; 
+     } else {
+        echo '<a href="/kame/test2023/test.php?page_id='.$i.'" >'. $i. '</a>'. '　';
+     }
+ }
+ if($now < $max_page){ // リンクをつけるかの判定
+    // $now = $now + 2;
+    echo '<a href="/kame/test2023/test.php?page_id='. $now .'" >次へ</a>'. '　';
+ } else {
+    echo '次へ';
+ }
+ 
 ?>
-<?php
-require_once('k_functions.php');
-
-$pdo = connectDB();
-date_default_timezone_set('Asia/Tokyo');
-// $time = intval(date('H'));
-$time = new DateTime('now');
-$time2 = $time->format("Y-m-d");
-$bat1 = 0;
-$bat2 = 0;
-$bat3 = 0;
-$bat4 = 0;
-$bat5 = 0;
-
-if  ( $_SERVER['REQUEST_METHOD'] !='POST'){
-    // session_start ();
-    $id1 = $_SESSION['id'];        
-    $sql = 'SELECT * FROM images WHERE watch <= :time2 AND use_id = :id1';
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':time2', $time2, PDO::PARAM_STR);
-    $stmt->bindValue(':id1', $id1, PDO::PARAM_INT);
-    $stmt->execute();
-    $images = $stmt->fetchAll();
-
-     for($i = 0; $i < count($images); $i++){
-        if($images[$i]['evaluation'] == "最悪"){
-            $bat1 += 1 ;
-        }elseif($images[$i]['evaluation'] == "良くない"){
-            $bat2 += 1 ;
-        }elseif($images[$i]['evaluation'] == "普通"){
-            $bat3 += 1 ;
-        }elseif($images[$i]['evaluation'] == "良い"){
-            $bat4 += 1 ;
-        }elseif($images[$i]['evaluation'] == "最高"){
-            $bat5 += 1 ;
-        }    
-}
-}
-?>
-
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -72,7 +78,7 @@ if  ( $_SERVER['REQUEST_METHOD'] !='POST'){
 
   <!-- Template Main CSS File -->
   <link href="../assets/css/style.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="../calen_link/calendar.css">
+
   <!-- =======================================================
   * Template Name: Amoeba - v4.8.0
   * Template URL: https://bootstrapmade.com/free-one-page-bootstrap-template-amoeba/
@@ -88,18 +94,18 @@ if  ( $_SERVER['REQUEST_METHOD'] !='POST'){
     <div class="container d-flex align-items-center">
 
       <div class="logo me-auto">
-        <h1><a href="../indexs.php">Health First</a></h1>
+        <h1><a href="index.html">Health First</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
       <nav id="navbar" class="navbar">
       <ul>
-        <li><a class="nav-link scrollto active" href="indexs.php">ホーム画面</a></li>
+        <li><a href="indexs.php">ホーム画面</a></li>
         <li><a href="picture.php">写真アップロード</a></li>
         <li><a href="gallery.php">写真閲覧</a></li>
         <li><a href="form2.php">お問い合わせ</a></li>
-        <li><a href="test.php">掲示板</a></li>
+        <li><a class="nav-link scrollto active" href="keijiban.php">掲示板</a></li>
         <li><a href="logout.php">ログアウト</a></li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
@@ -120,39 +126,33 @@ if  ( $_SERVER['REQUEST_METHOD'] !='POST'){
 
     <!-- ======= About Us Section ======= -->
     <section id="about" class="about">
-      <div class="container">
+        <div class="container">
+            <div class="row">
 
-        <div class="section-title">
-          <h2>私たちの紹介</h2>
-        </div>
+                <div class="col-lg-6 order-1 order-lg-2">
+	                <?php foreach($disp_data as $val):?>  <!--データ表示  -->
+                        <div>No:<?php echo $val['id']?></div>
+		        	    <div>名前：<?php echo $val['name']?></div>
+		        	    <div>投稿内容：<?php echo $val['contents']?></div>
+		        	<div>------------------------------------------</div>
+                    <?php endforeach;?>
+                    
+                </div>
 
-        <div class="row">
-          <div class="col-lg-6 order-1 order-lg-2">
-        <div id="calendar"></div>
-			  <!--<script src="calendar.js"></script>-->
-        <span id="calenArea"></span>
-        <script type="text/javascript" src="../calen_link/calendar.js"></script>
+                <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
+                    <h2>新規投稿</h2>
+                    <form  method="post">
+                        名前 : <input type="text" name="name1" value=""><br>
+                        投稿内容: <input type="text" name="contents1" value=""><br>
+                        <button type="submit">投稿</button>
+                    </form>
+                </div>
+                <div>
+                    <!-- <?php paging2($totalPage, $page); ?> -->
+                </div> 
+
             </div>
-            <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
-              <h3>私たちのチームは、あたかも身体の快楽が想定されているかのように、最も価値のある快楽を提供します。</h3>
-              <p class="fst-italic">
-                私たちは健康を一番に活動しています。
-              </p>
-              <ul id="hyouka">
-                <i class="bi bi-check2-circle"></i><?php print "最低の評価をした回数は「" . $bat1 ."」です。" ?><br>
-                <i class="bi bi-check2-circle"></i><?php print "良くないの評価をした回数は「" . $bat2 ."」です。"?><br>
-                <i class="bi bi-check2-circle"></i><?php print "普通の評価をした回数は「" . $bat3 ."」です。"?><br>
-                <i class="bi bi-check2-circle"></i><?php print "良いの評価をした回数は「" . $bat4 ."」です。"?><br>
-                <i class="bi bi-check2-circle"></i><?php print "最高の評価をした回数は「" . $bat5 ."」です。"?><br>
- 
-
-                <!-- <li><i class="bi bi-check2-circle"></i>私達はそれから何らかの利益を得ることを除いて、まったく働きません</li> -->
-                <!-- <li><i class="bi bi-check2-circle"></i> 疑念や苛立ちを育み、喜びの叱責の痛みを持って髪の毛になりたい。</li> -->
-                <!-- <li><i class="bi bi-check2-circle"></i> 欲望に目がくらんでいない限り、彼らは中にいる義務を放棄した者の罪悪感の魂。</li> -->
-                <!-- <li><i class="bi bi-check2-circle"></i><a href="https://www.topgate.co.jp/google-calendar-how-to-use">わからない際はこちら</a></li> -->
-              </ul>
-            </div>
-          </div>
+            
     </section><!-- End About Us Section -->
 
     <!-- ======= Services Section ======= -->
@@ -175,7 +175,7 @@ if  ( $_SERVER['REQUEST_METHOD'] !='POST'){
           </div>
           <div class="col-lg-4 col-md-6 icon-box">
             <div class="icon"><i class="bi bi-globe"></i></div>
-            <h4 class="title"><a href="../chatbot.html">専門スタッフのアフタフォロー</a></h4>
+            <h4 class="title"><a href="chatbot.html">専門スタッフのアフタフォロー</a></h4>
           </div>
       </div>
     </section><!-- End Services Section -->
